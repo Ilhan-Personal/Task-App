@@ -19,7 +19,12 @@ const uploadAvatar = multer({
     cb(null, true);
   },
 });
+//front end downn
 
+router.get("/users/signup", async ({ body }, res) => {
+  res.render("signup");
+});
+// front end ^^^^^
 router.post("/users/signup", async ({ body }, res) => {
   const newuser = new user(body);
   try {
