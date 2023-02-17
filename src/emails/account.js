@@ -1,12 +1,12 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service:'gmail',
-    auth:{
-        user:'ilhan.syed@gmail.com',
-        pass: process.env.APP_PASSWORD
-    }
-})
+  service: "gmail",
+  auth: {
+    user: "ilhan.syed@gmail.com",
+    pass: "hello",
+  },
+});
 
 // const mailOptions = {
 //     from : 'ilhan.syed@gmail.com',
@@ -23,33 +23,33 @@ const transporter = nodemailer.createTransport({
 //     }
 // })
 
-const sendWelcomeEmail = (email,name) =>{
-    const mailOptions = {
-        from : 'ilhan.syed@gmail.com',
-        to : email,
-        subject : 'WELCOME !!!',
-        text : `Welcome to the app ${name}. Let me know how you like the app !`
+const sendWelcomeEmail = (email, name) => {
+  const mailOptions = {
+    from: "ilhan.syed@gmail.com",
+    to: email,
+    subject: "WELCOME !!!",
+    text: `Welcome to the app ${name}. Let me know how you like the app !`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
     }
-    transporter.sendMail(mailOptions,(error,info)=>{
-        if(error){
-            console.log(error)
-        }
-    })
-}
-const cancellationEmail = (email,name)=>{
-    const mailOptions = {
-        from : 'ilhan.syed@gmail.com',
-        to : email,
-        subject : 'Can\'t see you go !',
-        text : `Hello ${name}. We're sorry you're cancelling our subscription. Please let us know how we can do better`
+  });
+};
+const cancellationEmail = (email, name) => {
+  const mailOptions = {
+    from: "ilhan.syed@gmail.com",
+    to: email,
+    subject: "Can't see you go !",
+    text: `Hello ${name}. We're sorry you're cancelling our subscription. Please let us know how we can do better`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
     }
-    transporter.sendMail(mailOptions,(error,info)=>{
-        if(error){
-            console.log(error)
-        }
-    })
-}
+  });
+};
 module.exports = {
-    sendWelcomeEmail,
-    cancellationEmail
-}
+  sendWelcomeEmail,
+  cancellationEmail,
+};
