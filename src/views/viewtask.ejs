@@ -1,0 +1,16 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="mt-5 container vh-100">
+  <div class="card">
+    <div class="card-header">Task Details</div>
+    <div class="card-body">
+      <h5 class="card-title"><%=task.name %></h5>
+      <p class="card-text">
+        With supporting text below as a natural lead-in to additional content.
+      </p>
+      <p>Completed: <%= task.completed %></p>
+      <a href="#" class="btn btn-primary">Mark as done</a>
+      <a href="#" class="btn btn-danger">Delete Task</a>
+    </div>
+  </div>
+</div>

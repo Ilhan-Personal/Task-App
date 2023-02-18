@@ -5,7 +5,9 @@ const Task = require("../models/task.js");
 const User = require("../models/user");
 
 //front
-
+router.get("/addtasks", auth, async (req, res) => {
+  res.render("addtask");
+});
 //front
 router.post("/tasks", auth, async (req, res) => {
   console.log(req.body);
@@ -16,7 +18,8 @@ router.post("/tasks", auth, async (req, res) => {
 
   try {
     await task.save();
-    res.status(201).send(task);
+    res.redirect("/tasks");
+    // res.status(201).send(task);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -58,8 +61,8 @@ router.get("/tasks/:id", auth, async (req, res) => {
     if (!task) {
       return res.status(404).send();
     }
-
-    res.send(task);
+    res.render("viewtask", { task });
+    //res.send(task);
   } catch (e) {
     res.status(500).send();
   }

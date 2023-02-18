@@ -1,5 +1,5 @@
 const express = require("express");
-const http = require("http");
+const engine = require("ejs-mate");
 require("./db/mongoose");
 const userRouter = require("./routers/user");
 const taskRouter = require("./routers/task");
@@ -11,6 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(userRouter);
 app.use(taskRouter);
+app.engine("ejs", engine);
+app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.listen(port, () => {
   console.log("Server is up on port " + port);

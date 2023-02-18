@@ -26,6 +26,9 @@ router.get("/users/signup", async ({ body }, res) => {
 router.get("/users/login", async (req, res) => {
   res.render("login");
 });
+router.get("/", async (req, res) => {
+  res.render("home");
+});
 // front end ^^^^^
 router.post("/users/signup", async ({ body }, res) => {
   const newuser = new user(body);
@@ -67,7 +70,8 @@ router.post("/users/login", async (req, res) => {
     console.log(foundUser);
     token = await foundUser.generateAuthToken();
 
-    res.status(201).send({ token });
+    res.redirect("/tasks");
+    // res.status(201).send({ token });
 
     // res.status(201).send({'user':await foundUser.getPublicProfile(),token})
   } catch (e) {
