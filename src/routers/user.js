@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = new express.Router();
 const user = require("../models/user.js");
 const auth = require("../middleware/auth.js");
@@ -24,13 +23,17 @@ const uploadAvatar = multer({
 router.get("/users/signup", async ({ body }, res) => {
   res.render("signup");
 });
+router.get("/users/login", async (req, res) => {
+  res.render("login");
+});
 // front end ^^^^^
 router.post("/users/signup", async ({ body }, res) => {
   const newuser = new user(body);
   try {
     await newuser.save();
     sendWelcomeEmail(newuser.email, newuser.name);
-    res.status(201).send({ newuser });
+    //res.status(201).send({ newuser });
+    res.redirect("/users/login");
   } catch (e) {
     res.status(400).send(e);
   }
@@ -61,11 +64,11 @@ router.post("/users/login", async (req, res) => {
       req.body.email,
       req.body.password
     );
-
-    token = await foundUser.generateAuthToken();
     console.log(foundUser);
+    token = await foundUser.generateAuthToken();
 
     res.status(201).send({ token });
+
     // res.status(201).send({'user':await foundUser.getPublicProfile(),token})
   } catch (e) {
     console.log(e);
@@ -75,23 +78,23 @@ router.post("/users/login", async (req, res) => {
 router.get("/users/me", auth, (req, res) => {
   res.send(req.user);
 });
-router.post(
-  "/users/me/avatar",
-  auth,
-  uploadAvatar.single("avatar"),
-  async (req, res) => {
-    const buffer = await sharp(req.file.buffer)
-      .resize({ width: 250, height: 250 })
-      .png()
-      .toBuffer();
-    req.user.avatar = buffer;
-    await req.user.save();
-    res.send();
-  },
-  (err, req, res, next) => {
-    res.status(400).send({ error: err.message });
-  }
-);
+// router.post(
+//   "/users/me/avatar",
+//   auth,
+//   uploadAvatar.single("avatar"),
+//   async (req, res) => {
+//     const buffer = await sharp(req.file.buffer)
+//       .resize({ width: 250, height: 250 })
+//       .png()
+//       .toBuffer();
+//     req.user.avatar = buffer;
+//     await req.user.save();
+//     res.send();
+//   },
+//   (err, req, res, next) => {
+//     res.status(400).send({ error: err.message });
+//   }
+// );
 router.delete(
   "/users/me/avatar",
   auth,

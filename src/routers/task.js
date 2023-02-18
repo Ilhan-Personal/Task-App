@@ -4,7 +4,11 @@ const auth = require("../middleware/auth");
 const Task = require("../models/task.js");
 const User = require("../models/user");
 
+//front
+
+//front
 router.post("/tasks", auth, async (req, res) => {
+  console.log(req.body);
   const task = new Task({
     ...req.body,
     owner: req.user._id,
@@ -38,7 +42,8 @@ router.get("/tasks", auth, async (req, res) => {
         sort,
       },
     });
-    res.send(req.user.tasks);
+    const tasks = req.user.tasks;
+    res.render("alltasks", { tasks });
   } catch (e) {
     res.status(500).send();
   }
