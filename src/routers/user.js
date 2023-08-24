@@ -5,8 +5,6 @@ const user = require("../models/user.js");
 const auth = require("../middleware/auth.js");
 const multer = require("multer");
 const sharp = require("sharp");
-const { sendWelcomeEmail } = require("../emails/account");
-const { cancellationEmail } = require("../emails/account");
 
 const uploadAvatar = multer({
   limits: {
@@ -29,7 +27,6 @@ router.post("/users/signup", async ({ body }, res) => {
   const newuser = new user(body);
   try {
     await newuser.save();
-    sendWelcomeEmail(newuser.email, newuser.name);
     res.status(201).send({ newuser });
   } catch (e) {
     res.status(400).send(e);
@@ -55,14 +52,20 @@ router.post("/users/logoutAll", auth, async (req, res) => {
     res.status(404).send();
   }
 });
-router.post("/users/login", async (req, res) => {
+router.get("/users/login",async (req,res)=>{
+  res.render("login");
+})
+router.post("/users/login", async ({body}, res) => {
+  console.log(body)
   try {
     const foundUser = await user.findByCredentials(
-      req.body.email,
-      req.body.password
+      body.email,
+      body.password
     );
 
     token = await foundUser.generateAuthToken();
+    res.cookie('token', token, { httpOnly: true }); // You might want to consider other options for security
+
     console.log(foundUser);
 
     res.status(201).send({ token });
@@ -103,7 +106,6 @@ router.delete(
   }
 );
 router.get("/users/:id", async (req, res) => {
-  console.log("in");
 
   const id = req.params.id;
   try {
@@ -113,7 +115,6 @@ router.get("/users/:id", async (req, res) => {
     }
     res.status(201).send(foundUser);
   } catch (e) {
-    console.log("couldnt");
     res.status(500).send();
   }
 });

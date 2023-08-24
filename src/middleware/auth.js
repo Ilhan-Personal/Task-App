@@ -2,10 +2,15 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const auth = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    console.log(token); //remove
+    // const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.cookies.token;
+    // console.log(token)
+    if(!token){
+      throw new Error();
+    }
+    // console.log(token); //remove
     const decoded = jwt.verify(token, "alwayslookonthebrightside");
-    console.log(decoded._id); //remove
+    // console.log(decoded._id); //remove
     const user = await User.findOne({
       _id: decoded._id,
       "tokens.token": token,
