@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    'mongodb+srv://ilhansyed:devrev123@cluster0.daiu1xh.mongodb.net/task-manager-api?retryWrites=true&w=majority', 
+    process.env.connectionString, 
     {
     useNewUrlParser: true,
     useUnifiedTopology:true
